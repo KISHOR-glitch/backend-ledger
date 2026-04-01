@@ -47,7 +47,33 @@ async function sendRegisrationEmail(userEmail, name) {
     await sendEmail(userEmail, subject, text, html);
 }
 
+async function sendTransactionEmail(userEmail, name, toAccount, amount, type) {
+    const subject = "Transaction Successful - Backend Ledger";
+
+    const text = `Hello ${name},
+Your transaction was successful.
+
+Type: ${type}
+Amount: ₹${amount}
+To Account: ${toAccount}
+
+Thank you for using Backend Ledger.`;
+
+    const html = `
+        <p>Hello ${name},</p>
+        <p>Your transaction was successful.</p>
+        <ul>
+            <li><b>Type:</b> ${type}</li>
+            <li><b>Amount:</b> ₹${amount}</li>
+            <li><b>To Account:</b> ${toAccount}</li>
+        </ul>
+        <p>Thank you for using Backend Ledger.</p>
+    `;
+
+    await sendEmail(userEmail, subject, text, html);
+}
 module.exports = {
   sendEmail,
-  sendRegisrationEmail
+  sendRegisrationEmail,
+  sendTransactionEmail
 };
