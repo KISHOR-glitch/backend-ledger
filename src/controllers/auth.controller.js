@@ -1,4 +1,6 @@
 const userModel= require("../models/user.model")
+const accountModel = require("../models/account.model")
+const tokenBlackListModel = require("../models/blackList.model")
 const jwt = require("jsonwebtoken");
 const emailService = require("../services/email.service")
 
@@ -17,6 +19,13 @@ async function userRegisterController(req,res){
 
     const user = await userModel.create({
         email,password,name
+    })
+
+    await accountModel.create({
+        user: user._id,
+        systemUser: true,
+        status: "ACTIVE",
+        currency: "INR"
     })
 
     const token = jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"3d"})
@@ -67,7 +76,29 @@ async function userLoginController(req,res){
 
 
 }
+async function userLogoutController(req,res){
+    const token = req.cookies.token|| req.headers.authorization?.split(" ")[ 1 ]
+
+    if(!token){
+        return res.status(400).json({ 
+            message:"user logout succefully"
+        })
+    }
+
+   res.clearCookie("token")
+    await tokenBlackListModel.create({
+        token:token
+    })
+
+    res.status(200).json({
+        message:" user logout success"
+    })
+}
+
+
+
 module.exports={
     userRegisterController,
-    userLoginController
+    userLoginController,
+    userLogoutController
 }
