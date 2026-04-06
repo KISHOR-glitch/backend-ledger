@@ -32,7 +32,7 @@ async function getAccountBalance(req,res){
   })
   if(!account){
     return res.status(404).json({
-      message: "Account not found"
+      message: "Aount not found"
     })
   }
 
