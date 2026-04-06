@@ -18,7 +18,9 @@ const transactionRouter = require("./routes/transaction.route")
 app.use("/api/auth",authRouter)
 app.use("/api/accounts",accountRouter)
 app.use("/api/transaction",transactionRouter)
-
+app.get("/", (req, res) => {
+    res.send("Backend is running 🚀");
+});
 
 
 
