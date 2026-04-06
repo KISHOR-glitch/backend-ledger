@@ -4,7 +4,7 @@ const accountModel = require("../models/account.model");
 async function createAccountController(req, res) {
   if (!req.user) {
     return res.status(401).json({
-      message: "User not authenticated"
+      message: "User not Aunthenated"
     });
   }
 
