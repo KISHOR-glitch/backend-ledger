@@ -1,20 +1,28 @@
-name: Backend CI
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Get code
       - uses: actions/checkout@v3
 
+      # 2. Setup Node
       - uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # 3. Install dependencies
       - run: npm install
 
-      - run: echo "Build successful"
+      # 4. (Optional) Run tests
+      - run: echo "No tests yet"
+
+      # 5. Deploy to Render
+      - name: Deploy to Render
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
